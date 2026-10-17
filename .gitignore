@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Optional project-local developer runtimes
+/.tools/
+
+# PlantVillage and derived datasets
+data/
+ml/data/
+
+# Development-only ONNX outputs and generated model files
+ml/.dev_artifacts/
+ml/models/
+models/
+*.joblib
+*.pkl
+*.pickle
+*.onnx
+*.pt
+*.pth
+
+# Next.js and package-manager output
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+web/next-env.d.ts
+web/coverage/
+web/tsconfig.tsbuildinfo
+
+# Editor and operating system
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
