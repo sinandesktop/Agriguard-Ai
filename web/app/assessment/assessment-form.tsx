@@ -8,8 +8,10 @@ import { TreatmentGuidanceSchema } from "@/lib/treatment-guidance-schema";
 import type { TreatmentGuidance } from "@/lib/treatment-guidance-schema";
 import { AGRICULTURAL_REFERENCES } from "@/lib/agricultural-references";
 import { runPhase9Inference } from "../real-inference/phase9-inference";
+import { isConfiguredPhase9ModelAvailable } from "../real-inference/phase9-model-config";
 
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+const LOCAL_MODEL_AVAILABLE = isConfiguredPhase9ModelAvailable();
 const ACCEPTED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const PLANTS = [
   ["tomato", "Tomato"],
@@ -363,8 +365,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
 
         {plantId === "tomato" || plantId === "potato" ? (
           <div className="local-unavailable" role="note">
-            <strong>Local assessment available</strong>
-            <span>Your photo stays in this browser.</span>
+            {LOCAL_MODEL_AVAILABLE ? <><strong>Local assessment available</strong><span>Your photo stays in this browser.</span></> : <><strong>Local assessment unavailable</strong><span>This deployment has not been configured with the model file yet.</span></>}
           </div>
         ) : plantId ? (
           <div className="local-unavailable" role="note">
@@ -410,7 +411,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
 
         <fieldset className="source-choice" disabled={loading}>
           <legend>3. Choose how to assess it</legend>
-          {(plantId === "tomato" || plantId === "potato") && (
+          {(plantId === "tomato" || plantId === "potato") && LOCAL_MODEL_AVAILABLE && (
             <label className="source-option">
               <input type="radio" name="assessment-source" value="local" checked={source === "local"} onChange={() => { invalidatePendingAssessment(); setSource("local"); setConsent(false); clearAssessmentState(); }} />
               <span><strong>Local assessment</strong><small>Runs in this browser. Your photo stays here.</small></span>

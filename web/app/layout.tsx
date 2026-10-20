@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AgriGuard AI | A thoughtful first look at plant health",
+  title: "AgriGuard AI | Plant Health Checker",
   description: "Assess plant leaf symptoms and explore cautious, source-backed guidance for your next steps.",
 };
 
