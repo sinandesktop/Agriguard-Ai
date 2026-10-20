@@ -94,7 +94,7 @@ test("initial form uses farmer wording and keeps model implementation details ou
 
 test("hero photograph has a graceful illustrated fallback on load failure", () => {
   render(<HeroPhoto />);
-  fireEvent.error(screen.getByAltText("Green tomato leaves and fruit growing on the plant"));
+  fireEvent.error(screen.getByAltText("Sunlit green tomato leaves covered with water droplets"));
   assert.ok(screen.getByRole("img", { name: "Illustration of a healthy green leaf" }));
 });
 

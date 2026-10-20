@@ -20,10 +20,10 @@ export default function HeroPhoto() {
   return (
     <img
       className="hero-photo"
-      src="/images/hero-tomato-v2.webp"
-      alt="Green tomato leaves and fruit growing on the plant"
-      width="1600"
-      height="1067"
+      src="/images/hero-custom.webp"
+      alt="Sunlit green tomato leaves covered with water droplets"
+      width="1518"
+      height="875"
       fetchPriority="high"
       onError={() => setFailed(true)}
     />

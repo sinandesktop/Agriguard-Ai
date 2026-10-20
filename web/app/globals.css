@@ -48,7 +48,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .hero-footnote { max-width: 48ch; margin: 26px 0 0; color: #728178; font-size: .84rem; line-height: 1.55; }
 .hero-visual { position: relative; min-width: 0; padding: 0 0 28px 26px; }
 .hero-visual::before { position: absolute; top: 28px; right: 0; bottom: 0; left: 0; border-radius: 34px; background: #e5ecdf; content: ''; }
-.hero-photo, .hero-photo-fallback { position: relative; display: block; width: 100%; height: clamp(230px, 43svh, 410px); border-radius: 28px; object-fit: cover; box-shadow: 0 22px 48px rgba(30, 59, 42, .13); }
+.hero-photo, .hero-photo-fallback { position: relative; display: block; width: 100%; height: clamp(270px, 50svh, 500px); border-radius: 28px; object-fit: cover; box-shadow: 0 22px 48px rgba(30, 59, 42, .13); }
 .hero-photo-fallback { display: grid; place-items: center; overflow: hidden; background: #e8efe4; }
 .hero-photo-fallback svg { width: 72%; height: 72%; fill: #a9c995; stroke: var(--forest); stroke-linecap: round; stroke-linejoin: round; stroke-width: 4; }
 .photo-caption { position: absolute; right: 18px; bottom: 0; display: flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 17px; border: 1px solid rgba(32, 92, 64, .1); border-radius: 12px; background: white; box-shadow: 0 8px 24px rgba(28, 53, 40, .08); color: #355242; font-size: .85rem; font-weight: 700; }
@@ -166,7 +166,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 860px) {
   .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(290px, .9fr); gap: 32px; }
   .hero-copy h1 { font-size: clamp(2.55rem, 6.2vw, 3.6rem); }
-  .hero-photo, .hero-photo-fallback { height: clamp(220px, 38svh, 330px); }
+  .hero-photo, .hero-photo-fallback { height: clamp(260px, 44svh, 390px); }
   .trust-grid { gap: 18px; }
 }
 
@@ -187,7 +187,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .hero-footnote { margin-top: 18px; }
   .hero-visual { padding-left: 10px; }
   .hero-visual::before { top: 18px; border-radius: 22px; }
-  .hero-photo, .hero-photo-fallback { height: clamp(190px, 60vw, 300px); border-radius: 19px; }
+  .hero-photo, .hero-photo-fallback { height: clamp(220px, 72vw, 350px); border-radius: 19px; }
   .photo-caption { right: 8px; min-height: 46px; padding: 0 12px; font-size: .78rem; }
   .assessment-shell { padding: 58px 14px 68px; scroll-margin-top: 118px; }
   .assessment-card { gap: 18px; padding: 20px 17px; border-radius: 17px; }

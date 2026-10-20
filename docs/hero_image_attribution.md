@@ -6,7 +6,7 @@ All source pages listed below identify the photographs as free to use under the 
 
 | Website use | Photographer | Source photograph | Local asset | Optimized size |
 | --- | --- | --- | --- | --- |
-| Hero | [Julien Kettmann](https://unsplash.com/@julien_k) | [A close up of a tomato plant with green leaves](https://unsplash.com/photos/a-close-up-of-a-tomato-plant-with-green-leaves-geDrf_fAIV4) | `web/public/images/hero-tomato-v2.webp` | 1600 × 1067, WebP, about 85 KB |
+| Hero | Supplied by the project owner | User-provided image; no external source asserted | `web/public/images/hero-custom.webp` (original retained as `hero-custom.png`) | 1518 × 875, WebP, about 75 KB |
 | Choose your plant card | [Suri Huang](https://unsplash.com/@fukayamamo) | [A close up of a plant with green leaves](https://unsplash.com/photos/a-close-up-of-a-plant-with-green-leaves-cSodBmVowzE) | `web/public/images/step-potato-leaf.webp` | 900 × 560, WebP, about 41 KB |
 | Assess the leaf card | [Jessie Maxwell](https://unsplash.com/@jessiemaxwellphotography) | [Person examining green leaves on a bush](https://unsplash.com/photos/person-examining-green-leaves-on-a-bush-NdOWvYlf9m0) | `web/public/images/step-leaf-care.webp` | 900 × 560, WebP, about 48 KB |
 | Explore next steps card | [Laura España](https://unsplash.com/@lauraespana) | [Tomatoes growing on a vine in a garden](https://unsplash.com/photos/tomatoes-growing-on-a-vine-in-a-garden-oZv-eHqiNdc) | `web/public/images/step-tomato-vine.webp` | 900 × 560, WebP, about 31 KB |
