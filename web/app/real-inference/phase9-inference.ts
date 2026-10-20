@@ -3,6 +3,7 @@ import { imageToRgb, type DecodedRgbImage } from "./image";
 import { CLASS_LABELS } from "./metadata";
 import { PHASE9_FEATURE_COUNT } from "./phase9-features";
 import { configuredPhase9ModelUrl } from "./phase9-model-config";
+import { loadCachedPhase9ModelSource } from "./phase9-model-cache";
 
 const INPUT_NAME = "X";
 const LABEL_OUTPUT = "label";
@@ -26,7 +27,12 @@ export function loadPhase9Session(): Promise<Phase9Session> {
   if (!sharedSession) {
     ort.env.wasm.numThreads = 1;
     ort.env.wasm.wasmPaths = "/api/runtime/ort/";
-    sharedSession = ort.InferenceSession.create(configuredPhase9ModelUrl(), { executionProviders: ["wasm"] }).then((session) => {
+    sharedSession = loadCachedPhase9ModelSource(configuredPhase9ModelUrl()).then(({ source }) => {
+      const options = { executionProviders: ["wasm"] as const };
+      return typeof source === "string"
+        ? ort.InferenceSession.create(source, options)
+        : ort.InferenceSession.create(source, options);
+    }).then((session) => {
       if (session.inputNames.length !== 1 || session.inputNames[0] !== INPUT_NAME ||
           session.outputNames.length !== 2 || session.outputNames[0] !== LABEL_OUTPUT || session.outputNames[1] !== SCORE_OUTPUT) {
         void session.release();
