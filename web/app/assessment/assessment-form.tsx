@@ -421,7 +421,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
           {(plantId === "tomato" || plantId === "potato") && LOCAL_MODEL_AVAILABLE && (
             <label className="source-option">
               <input type="radio" name="assessment-source" value="local" checked={source === "local"} onChange={() => { invalidatePendingAssessment(); setSource("local"); setConsent(false); clearAssessmentState(); }} />
-              <span><strong>Local assessment</strong><small>Runs in this browser. Your photo stays here. A ~296 MB model copy may be saved here to speed up later visits; browser storage can be cleared.</small></span>
+              <span><strong>Local assessment</strong><small>Your photo is checked on this device and is not sent online.</small></span>
             </label>
           )}
           {plantId && (
