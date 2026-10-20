@@ -381,7 +381,6 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
             id="leaf-image"
             type="file"
             accept="image/jpeg,image/png,image/webp"
-            capture="environment"
             onChange={chooseImage}
             aria-describedby="image-help"
             disabled={loading}

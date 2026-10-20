@@ -87,6 +87,7 @@ test("initial form uses farmer wording and keeps model implementation details ou
   render(<AssessmentForm />);
   assert.ok(screen.getByRole("heading", { name: "Check your plant" }));
   assert.ok(screen.getByRole("button", { name: "Analyze leaf" }));
+  assert.equal((screen.getByLabelText("2. Add a leaf photo") as HTMLInputElement).getAttribute("capture"), null);
   fireEvent.change(screen.getByLabelText("1. Select the plant"), { target: { value: "potato" } });
   assert.ok(screen.getByRole("radio", { name: /Groq/ }));
   assert.doesNotMatch(document.body.textContent ?? "", /HOG|HSV|SVM|310 MB|Phase 9/);

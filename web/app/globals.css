@@ -179,7 +179,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .site-nav { order: 3; width: 100%; justify-content: space-between; gap: 10px; padding: 10px 0 0; }
   .site-nav a { padding: 5px 0; font-size: .84rem; }
   .button-small { min-height: 39px; padding: 0 12px; font-size: .82rem; }
-  .hero-section { min-height: 0; padding: 42px 0 54px; }
+  /* Fill the phone viewport below the two-row sticky mobile header. */
+  .hero-section { min-height: calc(100svh - 88px); padding: 32px 0 38px; }
   .hero-inner { width: min(100% - 36px, 600px); grid-template-columns: 1fr; gap: 34px; }
   .hero-copy h1 { max-width: 13ch; font-size: clamp(2.7rem, 11vw, 4rem); }
   .hero-description { margin-top: 17px; font-size: 1.02rem; }
