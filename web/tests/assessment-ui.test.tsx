@@ -24,6 +24,7 @@ let waitFor: typeof import("@testing-library/react").waitFor;
 let cleanup: typeof import("@testing-library/react").cleanup;
 let user: import("@testing-library/user-event").UserEvent;
 let AssessmentForm: typeof import("../app/assessment/assessment-form").default;
+let HeroPhoto: typeof import("../app/hero-photo").default;
 
 before(async () => {
   const testing = await import("@testing-library/react");
@@ -35,6 +36,7 @@ before(async () => {
   const userEvent = (await import("@testing-library/user-event")).default;
   user = userEvent.setup({ document: dom.window.document });
   AssessmentForm = (await import("../app/assessment/assessment-form")).default;
+  HeroPhoto = (await import("../app/hero-photo")).default;
 });
 
 afterEach(() => {
@@ -90,6 +92,12 @@ test("initial form uses farmer wording and keeps model implementation details ou
   assert.doesNotMatch(document.body.textContent ?? "", /HOG|HSV|SVM|310 MB|Phase 9/);
 });
 
+test("hero photograph has a graceful illustrated fallback on load failure", () => {
+  render(<HeroPhoto />);
+  fireEvent.error(screen.getByAltText("Green tomato leaves and fruit growing on the plant"));
+  assert.ok(screen.getByRole("img", { name: "Illustration of a healthy green leaf" }));
+});
+
 async function selectPlantAndImage(plant = "potato", filename = "leaf.png") {
   await user.selectOptions(screen.getByLabelText("1. Select the plant"), plant);
   const image = new File([new Uint8Array([1, 2, 3])], filename, { type: "image/png" });
@@ -106,6 +114,8 @@ test("preview can be removed and replaced with another image", async () => {
   render(<AssessmentForm />);
   await selectPlantAndImage();
   assert.match((screen.getByAltText(/Preview of selected leaf photo/) as HTMLImageElement).src, /blob:test-/);
+  assert.ok(screen.getByRole("button", { name: "Replace photo" }));
+  assert.ok(screen.getByRole("button", { name: "Remove photo" }));
   await user.click(screen.getByRole("button", { name: "Remove photo" }));
   assert.equal(screen.queryByAltText(/Preview of selected leaf photo/), null);
   await user.upload(screen.getByLabelText("2. Add a leaf photo"), new File(["replacement"], "new-leaf.webp", { type: "image/webp" }));
@@ -203,17 +213,9 @@ test("Groq is an explicit consent-gated provider and the selected provider is se
   assert.ok(screen.getByText("Assessment source: Groq"));
 });
 
-test("external Banana broad leaf-spot result remains visible with disease-specific references", async () => {
+test("external Banana diagnosis stays visible but expert-review results withhold crop-specific references", async () => {
   const bananaAssessment = { ...validAssessment, possible_plant: "banana", predicted_crop: "Banana", possible_disease: "banana leaf spot", explanation: "Possible leaf lesions are visible.", needs_expert_review: true };
-  const bananaGuidance = {
-    status: "general_reference", heading: "Banana leaf-spot references",
-    message: "This broad label does not identify a specific disease; compare these pages but do not assume Sigatoka.",
-    steps: ["Compare the lesion pattern with the source descriptions.", "Monitor new spots.", "Ask an expert to confirm the cause."],
-    sources: [
-      { title: "Kerala Agricultural University: Banana Sigatoka leaf spot", url: "https://www.celkau.in/Crops/fruits/banana/leafspot.php" },
-      { title: "TNAU Agritech: Banana yellow Sigatoka", url: "https://agritech.tnau.ac.in/crop_protection/banana_diseases/crop_prot_crop%20diseases_fruits_banana_8.html" },
-    ],
-  };
+  const bananaGuidance = { status: "guidance_withheld", reason: "review_required", message: "The provider recommends expert confirmation, so crop-specific comparison guidance is withheld." };
   mockFetch(async () => Response.json({ status: "assessment_ready", assessment: bananaAssessment }), bananaGuidance);
   user = (await import("@testing-library/user-event")).default.setup({ document: dom.window.document });
   render(<AssessmentForm />);
@@ -222,15 +224,44 @@ test("external Banana broad leaf-spot result remains visible with disease-specif
   await user.click(screen.getByRole("checkbox"));
   await user.click(screen.getByRole("button", { name: "Analyze leaf" }));
   await screen.findByText("Banana - banana leaf spot");
-  assert.ok(screen.getByText("Banana leaf-spot references"));
-  assert.ok(screen.getByText("Monitor new spots."));
+  assert.ok(screen.getByText("Verified guidance unavailable"));
+  assert.ok(screen.getByText(/crop-specific comparison guidance is withheld/i));
   assert.ok(screen.getByText("AI suggestions — not verified"));
   assert.ok(screen.getByText("Take another clear photo of the whole leaf."));
   assert.ok(screen.getByRole("link", { name: "Kerala Agricultural University Agri Infotech Portal" }));
   assert.ok(screen.getByRole("link", { name: "Tamil Nadu Agricultural University Agritech Portal" }));
-  assert.ok(screen.getByRole("link", { name: /Kerala Agricultural University: Banana Sigatoka leaf spot/ }));
-  assert.ok(screen.getByRole("link", { name: /TNAU Agritech: Banana yellow Sigatoka/ }));
-  assert.ok(screen.getByText(/No medicine, pesticide, or dosage has been verified for this image/));
+  assert.equal(screen.queryByRole("link", { name: /Banana Sigatoka leaf spot|Banana yellow Sigatoka/ }), null);
+});
+
+test("a delayed assessment cannot replace results after its crop context changes", async () => {
+  let resolveAssessment!: (response: Response) => void;
+  let responseReturned = false;
+  mockFetch(async () => {
+    const response = await new Promise<Response>((resolve) => { resolveAssessment = resolve; });
+    responseReturned = true;
+    return response;
+  });
+  user = (await import("@testing-library/user-event")).default.setup({ document: dom.window.document });
+  render(<AssessmentForm />);
+  await selectPlantAndImage("banana");
+  await chooseExternal();
+  await user.click(screen.getByRole("checkbox"));
+  await user.click(screen.getByRole("button", { name: "Analyze leaf" }));
+
+  assert.equal((screen.getByLabelText("1. Select the plant") as HTMLSelectElement).disabled, true);
+  assert.equal((screen.getByLabelText("2. Add a leaf photo") as HTMLInputElement).disabled, true);
+  assert.equal((screen.getByRole("checkbox") as HTMLInputElement).disabled, true);
+  assert.equal((screen.getByRole("button", { name: /Analyzing leaf/ }) as HTMLButtonElement).disabled, true);
+
+  // Exercise the stale-response guard even if a context-change event slips past the disabled controls.
+  fireEvent.change(screen.getByLabelText("1. Select the plant"), { target: { value: "tomato" } });
+  assert.equal((screen.getByLabelText("1. Select the plant") as HTMLSelectElement).value, "tomato");
+  resolveAssessment(Response.json({ status: "assessment_ready", assessment: validAssessment }));
+  await waitFor(() => assert.equal(responseReturned, true));
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(screen.queryByText("Potato - Early blight"), null);
+  assert.equal(screen.queryByText("Banana - banana leaf spot"), null);
+  assert.equal(screen.queryByRole("heading", { name: "Possible diagnosis" }), null);
 });
 
 test("uncertain external output is shown cautiously without treatment advice", async () => {
@@ -413,6 +444,22 @@ test("healthy local classes use cautious wording and no disease medicine", async
   assert.ok(screen.getByText(/can still miss disease/i));
   assert.ok(screen.getByText("General prevention guidance"));
   assert.ok(screen.getByText("No disease medicine is indicated for a healthy classification."));
+});
+
+test("Check another leaf clears the result and form and returns focus to crop selection", async () => {
+  mockFetch(async () => { throw new Error("Local classification must not call online assessment"); });
+  user = (await import("@testing-library/user-event")).default.setup({ document: dom.window.document });
+  render(<AssessmentForm localInference={async () => ({ classId: 2, label: "Potato___healthy" })} />);
+  await selectPlantAndImage("potato");
+  await user.click(screen.getByRole("radio", { name: /Local assessment/ }));
+  await user.click(screen.getByRole("button", { name: "Analyze leaf" }));
+  await screen.findByText("Potato - possible healthy appearance");
+  await user.click(screen.getByRole("button", { name: "Check another leaf" }));
+  assert.equal((screen.getByLabelText("1. Select the plant") as HTMLSelectElement).value, "");
+  assert.equal((screen.getByLabelText("2. Add a leaf photo") as HTMLInputElement).value, "");
+  assert.equal(screen.queryByText("Potato - possible healthy appearance"), null);
+  assert.equal(screen.queryByRole("radio", { name: /Local assessment/ }), null);
+  assert.equal(document.activeElement, screen.getByLabelText("1. Select the plant"));
 });
 
 test("renders the mapped possible disease or careful healthy wording for all six Phase 9 class IDs", async () => {

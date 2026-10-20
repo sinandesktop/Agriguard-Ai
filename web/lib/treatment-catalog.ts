@@ -122,6 +122,12 @@ function externalCropReference(input: Extract<AssessmentGuidanceRequest, { sourc
   };
 }
 
+function comparableCrop(value: string): string {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "chili") return "chilli";
+  return normalized;
+}
+
 function exactRecord(plantId: PlantId, diseaseId: DiseaseId): TreatmentRecord | undefined {
   return records.find((record) => record.plant_id === plantId && record.disease_id === diseaseId && record.status === "verified");
 }
@@ -183,8 +189,13 @@ export function resolveAssessmentGuidance(input: AssessmentGuidanceRequest): Ass
   if (input.result_type !== "disease" && input.result_type !== "healthy") return withhold("unknown_result", safeNextStep);
   const generalReference = externalCropReference(input);
   if (generalReference) {
-    if (input.image_quality !== "good" || input.plant_match !== "match") {
-      return withhold("review_required", "The provider recommends expert confirmation before choosing disease-specific treatment.", generalReference.sources);
+    const selectedCrop = comparableCrop(input.selected_plant_id);
+    const predictedCrop = comparableCrop(input.predicted_crop as string);
+    if (selectedCrop !== predictedCrop || input.plant_match === "mismatch") {
+      return withhold("crop_mismatch", "The selected and identified plants do not match, so crop-specific comparison guidance is withheld. Confirm the plant with a qualified agricultural expert.");
+    }
+    if (input.needs_expert_review !== false || input.image_quality !== "good" || input.plant_match !== "match") {
+      return withhold("review_required", "The provider recommends expert confirmation, so crop-specific comparison guidance is withheld.");
     }
     return generalReference;
   }

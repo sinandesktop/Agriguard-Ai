@@ -64,7 +64,9 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
   const [error, setError] = useState<UiError | null>(null);
   const [inputError, setInputError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const plantSelectRef = useRef<HTMLSelectElement>(null);
   const submissionInFlight = useRef(false);
+  const requestSequence = useRef(0);
 
   useEffect(() => {
     if (!image) {
@@ -91,7 +93,16 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
     setInputError("");
   }
 
+  function invalidatePendingAssessment() {
+    requestSequence.current += 1;
+    if (submissionInFlight.current) {
+      submissionInFlight.current = false;
+      setLoading(false);
+    }
+  }
+
   function choosePlant(event: ChangeEvent<HTMLSelectElement>) {
+    invalidatePendingAssessment();
     setPlantId(event.currentTarget.value);
     setSource("");
     setConsent(false);
@@ -99,6 +110,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
   }
 
   function changeCustomPlant(event: ChangeEvent<HTMLInputElement>) {
+    invalidatePendingAssessment();
     setCustomPlant(event.currentTarget.value);
     setSource("");
     setConsent(false);
@@ -106,6 +118,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
   }
 
   function chooseImage(event: ChangeEvent<HTMLInputElement>) {
+    invalidatePendingAssessment();
     const file = event.currentTarget.files?.[0] ?? null;
     setConsent(false);
     clearAssessmentState();
@@ -127,10 +140,23 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
   }
 
   function removeImage() {
+    invalidatePendingAssessment();
     setImage(null);
     setConsent(false);
     clearAssessmentState();
     if (inputRef.current) inputRef.current.value = "";
+  }
+
+  function resetAssessment() {
+    invalidatePendingAssessment();
+    setPlantId("");
+    setCustomPlant("");
+    setSource("");
+    setImage(null);
+    setConsent(false);
+    clearAssessmentState();
+    if (inputRef.current) inputRef.current.value = "";
+    plantSelectRef.current?.focus();
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -154,6 +180,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
       return;
     }
 
+    const requestId = ++requestSequence.current;
     if (source === "local") {
       if (plantId !== "tomato" && plantId !== "potato") {
         setLocalError("Local assessment is available only for tomato and potato.");
@@ -163,15 +190,19 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
       setLoading(true);
       try {
         const prediction = await localInference(image);
+        if (requestSequence.current !== requestId) return;
         const mapped = getPhase9ClassResult(prediction.classId);
         if (!mapped || mapped.label !== prediction.label) throw new Error("The local output did not match the saved class mapping.");
         setLocalResult(mapped);
-        setGuidance(await loadGuidance({ source: "local_phase9", selected_plant_id: plantId, class_id: mapped.classId }));
+        const guidanceResult = await loadGuidance({ source: "local_phase9", selected_plant_id: plantId, class_id: mapped.classId });
+        if (requestSequence.current === requestId) setGuidance(guidanceResult);
       } catch {
-        if (localResult === null) setLocalError("Local assessment could not be completed. You can retry or explicitly choose the optional online assessment.");
+        if (requestSequence.current === requestId) setLocalError("Local assessment could not be completed. You can retry or explicitly choose the optional online assessment.");
       } finally {
-        submissionInFlight.current = false;
-        setLoading(false);
+        if (requestSequence.current === requestId) {
+          submissionInFlight.current = false;
+          setLoading(false);
+        }
       }
       return;
     }
@@ -187,8 +218,10 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
     setLoading(true);
     try {
       const response = await fetch("/api/assess-plant", { method: "POST", body });
+      if (requestSequence.current !== requestId) return;
       let payload: unknown;
       try { payload = await response.json(); } catch { payload = null; }
+      if (requestSequence.current !== requestId) return;
       if (!response.ok || !payload || typeof payload !== "object") {
         const code = payload && typeof payload === "object" ? (payload as { status?: unknown }).status : "provider_error";
         setError(assessmentError(code));
@@ -208,10 +241,12 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
         message: "Verified guidance could not be loaded. Ask a qualified agricultural expert.",
       });
     } catch {
-      setError(assessmentError("provider_error"));
+      if (requestSequence.current === requestId) setError(assessmentError("provider_error"));
     } finally {
-      submissionInFlight.current = false;
-      setLoading(false);
+      if (requestSequence.current === requestId) {
+        submissionInFlight.current = false;
+        setLoading(false);
+      }
     }
   }
 
@@ -301,16 +336,17 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
             : "The plant identification may not match your selection. Confirm the plant before using the guidance below.";
 
   return (
-    <main className="assessment-shell">
+    <section id="assessment" className="assessment-shell" aria-labelledby="assessment-heading">
       <header className="assessment-header">
-        <p className="assessment-brand">AgriGuard AI</p>
-        <h1>Check your plant</h1>
+        <p className="eyebrow">Start with a clear photo</p>
+        <h2 id="assessment-heading">Check your plant</h2>
+        <p>Choose the plant, add a leaf photo, then select how you would like to assess it.</p>
       </header>
 
-      <form className="assessment-card" onSubmit={submit} noValidate>
+      <form className="assessment-card" onSubmit={submit} noValidate aria-labelledby="assessment-heading">
         <div className="form-step">
           <label htmlFor="plant-select">1. Select the plant</label>
-          <select id="plant-select" value={plantId} onChange={choosePlant} aria-describedby="plant-help">
+          <select ref={plantSelectRef} id="plant-select" value={plantId} onChange={choosePlant} aria-describedby="plant-help" disabled={loading}>
             <option value="">Choose a plant</option>
             {PLANTS.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
           </select>
@@ -320,7 +356,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
         {plantId === "other" && (
           <div className="form-step">
             <label htmlFor="custom-plant">Plant name</label>
-            <input id="custom-plant" value={customPlant} onChange={changeCustomPlant} maxLength={80} autoComplete="off" required aria-describedby="custom-plant-help" />
+            <input id="custom-plant" value={customPlant} onChange={changeCustomPlant} maxLength={80} autoComplete="off" required aria-describedby="custom-plant-help" disabled={loading} />
             <p className="field-help" id="custom-plant-help">Enter the plant name before continuing.</p>
           </div>
         )}
@@ -347,14 +383,18 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
             capture="environment"
             onChange={chooseImage}
             aria-describedby="image-help"
+            disabled={loading}
           />
-          <p className="field-help" id="image-help">JPEG, PNG, or WebP. Maximum 4 MiB.</p>
+        <p className="field-help" id="image-help">JPEG, PNG, or WebP. Maximum 4 MiB. You can use your camera or choose a photo.</p>
           {previewUrl && image && (
             <div className="image-preview">
               <img src={previewUrl} alt={`Preview of selected leaf photo: ${image.name}`} />
               <div className="preview-caption">
                 <span title={image.name}>{image.name}</span>
-                <button className="text-button" type="button" onClick={removeImage}>Remove photo</button>
+                <div className="preview-actions">
+                  <button className="replace-button" type="button" onClick={() => inputRef.current?.click()} disabled={loading}>Replace photo</button>
+                  <button className="text-button" type="button" onClick={removeImage} disabled={loading}>Remove photo</button>
+                </div>
               </div>
             </div>
           )}
@@ -364,21 +404,21 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
         {externalSelected && (
           <div className="external-notice" role="note">
             <strong>External processing disclosure</strong>
-            <p>Your plant photo will be sent to {externalProviderLabel} for AI analysis. AgriGuard AI is designed not to store the image, but it will be processed by that external service. Do not upload photos containing people or private information unless necessary.</p>
+            <p>Your photo will be sent to {externalProviderLabel} only after you agree and analyze. AgriGuard AI does not intentionally store it, but we cannot control the provider’s processing or data-retention practices. Do not upload photos containing people or private information unless necessary.</p>
           </div>
         )}
 
-        <fieldset className="source-choice">
+        <fieldset className="source-choice" disabled={loading}>
           <legend>3. Choose how to assess it</legend>
           {(plantId === "tomato" || plantId === "potato") && (
             <label className="source-option">
-              <input type="radio" name="assessment-source" value="local" checked={source === "local"} onChange={() => { setSource("local"); setConsent(false); clearAssessmentState(); }} />
+              <input type="radio" name="assessment-source" value="local" checked={source === "local"} onChange={() => { invalidatePendingAssessment(); setSource("local"); setConsent(false); clearAssessmentState(); }} />
               <span><strong>Local assessment</strong><small>Runs in this browser. Your photo stays here.</small></span>
             </label>
           )}
           {plantId && (
             <label className="source-option">
-              <input type="radio" name="assessment-source" value="groq" checked={source === "groq"} onChange={() => { setSource("groq"); setConsent(false); clearAssessmentState(); }} />
+              <input type="radio" name="assessment-source" value="groq" checked={source === "groq"} onChange={() => { invalidatePendingAssessment(); setSource("groq"); setConsent(false); clearAssessmentState(); }} />
               <span><strong>Groq</strong><small>Your photo is sent to Groq only after you agree and analyze.</small></span>
             </label>
           )}
@@ -387,14 +427,14 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
 
         {externalSelected && (
           <label className="consent-control">
-            <input type="checkbox" checked={consent} onChange={(event) => { setConsent(event.currentTarget.checked); clearAssessmentState(); }} />
+            <input type="checkbox" checked={consent} onChange={(event) => { invalidatePendingAssessment(); setConsent(event.currentTarget.checked); clearAssessmentState(); }} disabled={loading} />
             <span>I agree to send this photo and plant selection to {externalProviderLabel} for an online assessment.</span>
           </label>
         )}
 
         <button className="assessment-button" type="submit" disabled={!canSubmit}>{loading ? "Analyzing leaf…" : "Analyze leaf"}</button>
 
-        {loading && <p className="loading-state" role="status" aria-live="polite">{source === "local" ? "Loading the Phase 9 model and extracting features in your browser. First load can take time." : `Preparing your photo and requesting ${externalProviderLabel}…`}</p>}
+        {loading && <p className="loading-state" role="status" aria-live="polite">{source === "local" ? "Checking this photo on your device. The first check may take a little longer." : `Preparing your photo and requesting ${externalProviderLabel}…`}</p>}
         {localError && <section className="assessment-error" role="alert"><h2>Local assessment unavailable</h2><p>{localError}</p></section>}
         {error && (
           <section className="assessment-error" role="alert">
@@ -429,6 +469,7 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
             <p>{assessment.needs_expert_review || assessmentCropMismatch || assessment.image_quality !== "good" ? "Confirm the plant and diagnosis with a qualified local agricultural expert before taking disease-specific action." : "Watch for changes and seek local advice if symptoms persist or worsen."}</p>
             {assessment.result_type === "healthy" && <p>A healthy appearance can still miss disease.</p>}
             <p className="result-disclaimer">This is an AI assessment, not a confirmed diagnosis.</p>
+            <button className="secondary-button reset-button" type="button" onClick={resetAssessment}>Check another leaf</button>
           </section>
         )}
         {localResult && (
@@ -443,10 +484,11 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
             <h3>What to do next</h3>
             <p>{localResult.healthy ? "The model did not identify one of its modeled diseases, but it can still miss disease. Monitor for new symptoms." : localResult.plantId !== plantId ? "Confirm the plant and diagnosis with a qualified local agricultural expert before taking disease-specific action." : "Watch for changes and seek local advice if symptoms persist or worsen."}</p>
             <p className="result-disclaimer">This is an AI assessment, not a confirmed diagnosis.</p>
+            <button className="secondary-button reset-button" type="button" onClick={resetAssessment}>Check another leaf</button>
           </section>
         )}
       </form>
 
-    </main>
+    </section>
   );
 }

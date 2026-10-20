@@ -88,14 +88,29 @@ test("unmatched Banana diseases retain diagnosis without invented treatment data
   if (result.status === "guidance_withheld") assert.match(result.message, /not available for this crop and possible disease/);
 });
 
-test("banana leaf-spot label shows comparison references without claiming a Sigatoka diagnosis", () => {
-  const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: "banana", predicted_crop: "Banana", result_type: "disease", possible_disease: "banana leaf spot", plant_match: "match", image_quality: "good", needs_expert_review: true });
+test("banana leaf-spot reference is withheld when expert review is required and retained for a clear matching result", () => {
+  const review = resolveAssessmentGuidance({ source: "groq", selected_plant_id: "banana", predicted_crop: "Banana", result_type: "disease", possible_disease: "banana leaf spot", plant_match: "match", image_quality: "good", needs_expert_review: true });
+  assert.equal(review.status, "guidance_withheld");
+  if (review.status === "guidance_withheld") {
+    assert.equal(review.reason, "review_required");
+    assert.equal(review.sources, undefined);
+  }
+  const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: "banana", predicted_crop: "Banana", result_type: "disease", possible_disease: "banana leaf spot", plant_match: "match", image_quality: "good", needs_expert_review: false });
   assert.equal(result.status, "general_reference");
   if (result.status === "general_reference") {
     assert.match(result.message, /broad leaf-spot label/);
     assert.equal(result.sources.length, 2);
     assert.ok(result.sources.some((source) => source.title.includes("Kerala Agricultural University")));
     assert.ok(result.sources.some((source) => source.title.includes("TNAU Agritech")));
+  }
+});
+
+test("external crop-specific references are withheld when selected and predicted crops differ", () => {
+  const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: "mango", predicted_crop: "Banana", result_type: "disease", possible_disease: "banana leaf spot", plant_match: "match", image_quality: "good", needs_expert_review: false });
+  assert.equal(result.status, "guidance_withheld");
+  if (result.status === "guidance_withheld") {
+    assert.equal(result.reason, "crop_mismatch");
+    assert.equal(result.sources, undefined);
   }
 });
 
@@ -111,7 +126,7 @@ test("source-reviewed mango and chilli disease aliases return non-chemical refer
     ["Chilli", "Powdery mildew"],
   ];
   for (const [crop, disease] of cases) {
-    const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: crop.toLowerCase(), predicted_crop: crop, result_type: "disease", possible_disease: disease, plant_match: "match", image_quality: "good", needs_expert_review: true });
+    const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: crop.toLowerCase(), predicted_crop: crop, result_type: "disease", possible_disease: disease, plant_match: "match", image_quality: "good", needs_expert_review: false });
     assert.equal(result.status, "general_reference", `${crop} ${disease}`);
     if (result.status === "general_reference") {
       assert.ok(result.sources.length >= 1);
@@ -127,7 +142,7 @@ test("nearby but unmapped external disease labels are not guessed", () => {
 });
 
 test("Banana Sigatoka provides cautious non-chemical reference steps, not a prescription", () => {
-  const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: "banana", predicted_crop: "Banana", result_type: "disease", possible_disease: "Black Sigatoka (Mycosphaerella musae)", plant_match: "match", image_quality: "good", needs_expert_review: true });
+  const result = resolveAssessmentGuidance({ source: "groq", selected_plant_id: "banana", predicted_crop: "Banana", result_type: "disease", possible_disease: "Black Sigatoka (Mycosphaerella musae)", plant_match: "match", image_quality: "good", needs_expert_review: false });
   assert.equal(result.status, "general_reference");
   if (result.status === "general_reference") {
     assert.match(result.message, /distinct disease/);
