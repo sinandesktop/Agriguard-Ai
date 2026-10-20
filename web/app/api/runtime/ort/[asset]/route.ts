@@ -1,6 +1,6 @@
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
-import { resolve } from "node:path";
+import { join } from "node:path";
 import { Readable } from "node:stream";
 
 export const runtime = "nodejs";
@@ -16,9 +16,9 @@ const ALLOWED_ASSETS = new Set([
 export async function GET(_request: Request, context: { params: Promise<{ asset: string }> }) {
   const { asset } = await context.params;
   if (!ALLOWED_ASSETS.has(asset)) return Response.json({ error: "Runtime asset not found." }, { status: 404, headers: { "Cache-Control": "no-store" } });
-  const assetPath = resolve(process.cwd(), "node_modules/onnxruntime-web/dist", asset);
-  const runtimeDirectory = resolve(process.cwd(), "node_modules/onnxruntime-web/dist") + "\\";
-  if (!assetPath.startsWith(runtimeDirectory)) return new Response(null, { status: 404 });
+  // `asset` must remain allowlisted above. `join` uses the host OS separator;
+  // a hard-coded Windows backslash rejects valid paths on Vercel's Linux runtime.
+  const assetPath = join(process.cwd(), "node_modules", "onnxruntime-web", "dist", asset);
   try {
     const info = await stat(assetPath);
     if (!info.isFile()) throw new Error("runtime asset is not a file");
