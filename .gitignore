@@ -22,6 +22,10 @@ htmlcov/
 # PlantVillage and derived datasets
 data/
 ml/data/
+!web/data/
+web/data/*
+!web/data/treatments.json
+!web/data/external_guidance.json
 
 # Development-only ONNX outputs and generated model files
 ml/.dev_artifacts/

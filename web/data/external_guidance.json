@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-20",
+  "scope": "Exact external crop/disease aliases with source-backed non-chemical reference steps. These entries do not verify that an image diagnosis is correct and do not provide chemical products or dosage.",
+  "entries": [
+    {
+      "crop": "banana",
+      "disease": "sigatoka leaf spot",
+      "aliases": ["sigatoka leaf spot", "sigatoka leaf spot (cercospora musae)", "yellow sigatoka", "banana sigatoka leaf spot"],
+      "heading": "Banana Sigatoka leaf-spot guidance",
+      "message": "These non-chemical steps are described by Kerala Agricultural University for Sigatoka leaf spot. A photo cannot confirm the pathogen; check with a local expert before disease-specific action.",
+      "steps": [
+        "Remove severely infected and completely dried leaves, following local disposal guidance.",
+        "Maintain field drainage, suitable spacing, and weed control.",
+        "Confirm the exact leaf-spot disease locally; several banana conditions can look similar."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Banana Sigatoka leaf spot", "url": "https://www.celkau.in/Crops/fruits/banana/leafspot.php", "supports": "Symptoms and non-chemical field management."},
+        {"title": "TNAU Agritech: Banana yellow Sigatoka", "url": "https://agritech.tnau.ac.in/crop_protection/banana_diseases/crop_prot_crop%20diseases_fruits_banana_8.html", "supports": "Yellow Sigatoka symptoms and field sanitation/drainage management."}
+      ]
+    },
+    {
+      "crop": "banana",
+      "disease": "unspecified banana leaf spot",
+      "aliases": ["banana leaf spot", "leaf spot", "leaf spots", "banana leaf spots", "banana leaf spot disease"],
+      "heading": "Banana leaf-spot references",
+      "message": "The assessment used a broad leaf-spot label, which does not identify a specific disease. These university pages describe Sigatoka types of leaf spot for comparison; they do not confirm that this is the condition in your photo.",
+      "steps": [
+        "Compare the whole plant and lesion pattern with the linked disease descriptions; a close-up photo alone may not distinguish causes.",
+        "Keep a record of whether new spots are appearing or spreading.",
+        "Ask a local agricultural expert to identify the cause before choosing disease-specific control."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Banana Sigatoka leaf spot", "url": "https://www.celkau.in/Crops/fruits/banana/leafspot.php", "supports": "One specific banana leaf-spot disease, its symptoms, and non-chemical management."},
+        {"title": "TNAU Agritech: Banana yellow Sigatoka", "url": "https://agritech.tnau.ac.in/crop_protection/banana_diseases/crop_prot_crop%20diseases_fruits_banana_8.html", "supports": "A specific yellow Sigatoka description for comparison; not confirmation of this image."}
+      ]
+    },
+    {
+      "crop": "banana",
+      "disease": "black sigatoka",
+      "aliases": ["black sigatoka", "black sigatoka (mycosphaerella musae)", "black sigatoka (pseudocercospora fijiensis)"],
+      "heading": "General banana leaf-spot guidance",
+      "message": "KAU's page is for Sigatoka leaf spot (Cercospora musae), while Black Sigatoka is a distinct disease. The steps below are general leaf-spot reference information, not a confirmed treatment for Black Sigatoka.",
+      "steps": [
+        "Remove severely infected and completely dried leaves, following local disposal guidance.",
+        "Maintain field drainage and suitable plant spacing.",
+        "Ask a local expert to confirm the exact Sigatoka disease before selecting control measures."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Banana Sigatoka leaf spot", "url": "https://www.celkau.in/Crops/fruits/banana/leafspot.php", "supports": "General non-chemical leaf-spot management for the disease named on the page."},
+        {"title": "Australian Department of Agriculture: Black Sigatoka", "url": "https://www.agriculture.gov.au/biosecurity/australia/naqs/naqs-target-lists/black-sigatoka", "supports": "Black Sigatoka identification and pathogen information."}
+      ]
+    },
+    {
+      "crop": "mango",
+      "disease": "unspecified mango leaf spot",
+      "aliases": ["mango leaf spot", "mango leaf spots", "leaf spot", "leaf spots", "mango leaf spot disease"],
+      "heading": "Mango leaf-spot references",
+      "message": "The assessment used a broad leaf-spot label and did not identify a specific cause. Mango anthracnose and grey blight are two separate conditions described by KAU; these links are for comparison, not confirmation.",
+      "steps": [
+        "Compare the shape, location, and progression of spots with the linked descriptions; do not assume they are the same disease.",
+        "Photograph the affected leaf and monitor whether new spots appear or existing spots enlarge.",
+        "Ask a local horticulture expert to confirm the cause before removing plant parts or choosing disease-specific control."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Mango anthracnose", "url": "https://www.celkau.in/ecropdoctor/fruits/Mango/anthracnose.php", "supports": "One possible mango leaf-spot disease, not confirmation of this result."},
+        {"title": "Kerala Agricultural University: Mango grey blight", "url": "https://www.celkau.in/Crops/fruits/Mango/blight.php", "supports": "A separate possible leaf-spot disease, not confirmation of this result."},
+        {"title": "TNAU: Diseases of Mango and their Management", "url": "https://agritech.tnau.ac.in/pdf/9.pdf", "supports": "A second university description of mango anthracnose for comparison."}
+      ]
+    },
+    {
+      "crop": "mango",
+      "disease": "anthracnose",
+      "aliases": ["anthracnose", "anthracnose (colletotrichum gloeosporioides)", "mango anthracnose"],
+      "heading": "Mango anthracnose reference steps",
+      "message": "Kerala Agricultural University's page describes mango anthracnose symptoms and management. The image assessment cannot confirm the pathogen; these are general, non-chemical reference steps.",
+      "steps": [
+        "Keep the canopy from becoming excessively dense; ask a local horticulture expert about suitable pruning timing.",
+        "Remove visibly affected fallen plant debris using locally appropriate disposal practices.",
+        "Have the diagnosis checked, especially if twigs, flowers, or fruit are also affected."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Mango anthracnose", "url": "https://www.celkau.in/ecropdoctor/fruits/Mango/anthracnose.php", "supports": "Mango symptoms and listed non-chemical canopy management."},
+        {"title": "TNAU: Diseases of Mango and their Management", "url": "https://agritech.tnau.ac.in/pdf/9.pdf", "supports": "Mango anthracnose symptoms and orchard sanitation/pruning information."}
+      ]
+    },
+    {
+      "crop": "mango",
+      "disease": "powdery mildew",
+      "aliases": ["powdery mildew", "powdery mildew (oidium mangiferae)", "mango powdery mildew"],
+      "heading": "Mango powdery-mildew reference steps",
+      "message": "The linked KAU page describes mango powdery mildew, including white powdery growth on leaves and flowering parts. A photo cannot confirm the cause; this is general non-chemical reference information.",
+      "steps": [
+        "Check whether powdery growth is present on leaves, flower stalks, flowers, or young fruit; confirm locally if unclear.",
+        "Maintain overall plant health and monitor new growth.",
+        "Ask a local horticulture expert to distinguish disease from dust, residue, or other leaf problems."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Mango powdery mildew", "url": "https://www.celkau.in/Crops/fruits/Mango/mildew.php", "supports": "Disease symptoms and general plant-health management."},
+        {"title": "TNAU Agritech: Mango powdery mildew", "url": "https://agritech.tnau.ac.in/crop_protection/mango_2.html", "supports": "Mango powdery-mildew symptoms; its chemical instructions are not adopted by AgriGuard."}
+      ]
+    },
+    {
+      "crop": "mango",
+      "disease": "grey blight",
+      "aliases": ["grey blight", "gray blight", "grey blight (pestalotia mangiferae)", "gray blight (pestalotia mangiferae)", "mango grey blight"],
+      "heading": "Mango grey-blight reference steps",
+      "message": "KAU describes grey blight as lesions that can begin at leaf margins or tips and enlarge. The assessment is preliminary; confirm the cause before removing plant material.",
+      "steps": [
+        "Photograph affected leaves and monitor whether spots enlarge or spread to new growth.",
+        "If affected plant parts are removed, follow local expert advice on safe disposal.",
+        "Ask a local horticulture expert to confirm grey blight rather than another leaf disorder."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Mango grey blight", "url": "https://www.celkau.in/Crops/fruits/Mango/blight.php", "supports": "Symptoms and removal of infected plant parts."},
+        {"title": "Kerala Agricultural University: Mango anthracnose", "url": "https://www.celkau.in/ecropdoctor/fruits/Mango/anthracnose.php", "supports": "A separate mango leaf-spot disease for differential comparison, not the same diagnosis."}
+      ]
+    },
+    {
+      "crop": "chilli",
+      "disease": "unspecified chilli leaf spot",
+      "aliases": ["chilli leaf spot", "chili leaf spot", "leaf spot", "leaf spots", "chilli leaf spots", "chili leaf spots"],
+      "heading": "Chilli leaf-spot references",
+      "message": "The broad leaf-spot label does not identify a cause. Chilli anthracnose, bacterial leaf spot, and Cercospora leaf spot are different conditions; use these pages for comparison only and seek local confirmation.",
+      "steps": [
+        "Compare lesion shape and progression against the source descriptions; leaf spots can have different causes.",
+        "Take clear photos of both sides of several affected leaves and monitor spread.",
+        "Ask a local agricultural expert to confirm the cause before choosing disease-specific control."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Chilli anthracnose", "url": "https://celkau.in/crops/vegetables/chilli/anthracnose.php", "supports": "One chilli disease that may involve leaf blight, not confirmation of this label."},
+        {"title": "TNAU Agritech: Chilli bacterial leaf spot", "url": "https://agritech.tnau.ac.in/crop_protection/chilli_diseases_4.html", "supports": "A distinct chilli leaf-spot condition for comparison."},
+        {"title": "TNAU Agritech: Chilli Cercospora leaf spot", "url": "https://agritech.tnau.ac.in/crop_protection/chilli_diseases_5.html", "supports": "A distinct chilli leaf-spot condition for comparison."}
+      ]
+    },
+    {
+      "crop": "chilli",
+      "disease": "anthracnose",
+      "aliases": ["anthracnose", "anthracnose (colletotrichum sp)", "anthracnose (colletotrichum capsici)", "chilli anthracnose", "chili anthracnose"],
+      "heading": "Chilli anthracnose reference steps",
+      "message": "KAU's chilli page describes anthracnose mainly on fruit, which may later be associated with leaf blight. The photo does not confirm that diagnosis; use these as general non-chemical practices.",
+      "steps": [
+        "Use healthy, disease-free seed for future planting.",
+        "Avoid overhead watering where feasible to limit prolonged wetness on foliage and fruit.",
+        "Remove fallen infected debris using locally appropriate disposal practices and seek confirmation if symptoms spread."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Chilli anthracnose", "url": "https://celkau.in/crops/vegetables/chilli/anthracnose.php", "supports": "Symptoms and listed non-chemical seed, rotation, water, and debris practices."},
+        {"title": "TNAU Agritech: Chilli anthracnose", "url": "https://www.agritech.tnau.ac.in/crop_protection/chilli_phdiseases_2.html", "supports": "Chilli anthracnose symptoms and disease-free seed guidance; chemical instructions are not adopted by AgriGuard."}
+      ]
+    },
+    {
+      "crop": "chilli",
+      "disease": "bacterial wilt",
+      "aliases": ["bacterial wilt", "bacterial wilt (ralstonia solanacearum)", "chilli bacterial wilt", "chili bacterial wilt"],
+      "heading": "Chilli bacterial-wilt reference steps",
+      "message": "Sudden persistent wilting can have multiple causes. KAU's page describes bacterial wilt signs and preventive field practices; get local confirmation before removing plants or taking disease-specific action.",
+      "steps": [
+        "Check whether lower leaves wilt suddenly while the plant remains green; a local expert can inspect the stem for bacterial ooze.",
+        "For future planting, use healthy planting material and well-drained raised beds where suitable.",
+        "Avoid moving soil or plant material from a suspect area until you have local advice."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Chilli bacterial wilt", "url": "https://www.celkau.in/ecropdoctor/vegetables/chilli/wilt.php", "supports": "Symptoms and preventive planting/drainage management."},
+        {"title": "TNAU Agritech: Chilli powdery mildew", "url": "https://www.agritech.tnau.ac.in/crop_protection/chilli_diseases_3.html", "supports": "Chilli powdery-mildew symptoms; chemical instructions are not adopted by AgriGuard."}
+      ]
+    },
+    {
+      "crop": "chilli",
+      "disease": "powdery mildew",
+      "aliases": ["powdery mildew", "powdery mildew (leveillula taurica)", "chilli powdery mildew", "chili powdery mildew"],
+      "heading": "Chilli powdery-mildew reference steps",
+      "message": "KAU describes white powdery growth on chilli stems and leaves, often on lower leaves. A photograph cannot establish the cause; this is general reference guidance.",
+      "steps": [
+        "Check the undersides and lower leaves for powdery growth and monitor whether it spreads.",
+        "Maintain field sanitation and remove fallen debris using local guidance.",
+        "Ask an agricultural expert to confirm the cause before applying any disease-specific control."
+      ],
+      "sources": [
+        {"title": "Kerala Agricultural University: Chilli powdery mildew", "url": "https://celkau.in/crops/vegetables/chilli/mildew.php", "supports": "Symptoms and field sanitation management."},
+        {"title": "Kerala Agricultural University: Chilli disease portal", "url": "https://celkau.in/crops/vegetables/chilli/disease.php", "supports": "Index of chilli disease descriptions."}
+      ]
+    }
+  ]
+}

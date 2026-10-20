@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "catalogue_scope": "Source-backed, non-chemical management guidance for the six current tomato and potato model labels. Chemical recommendations are intentionally withheld pending current product-label and registration verification.",
+  "records": [
+    {
+      "plant_id": "tomato",
+      "disease_id": "healthy",
+      "model_label": "Tomato___healthy",
+      "plant_species": "Solanum lycopersicum",
+      "condition": "healthy",
+      "symptoms": [],
+      "diagnostic_limitations": [
+        "A model healthy classification is not proof that the whole plant is disease-free. The model only supports this leaf-image class."
+      ],
+      "treatment_categories": [
+        "cultural"
+      ],
+      "non_chemical_management": [
+        "No disease medicine is indicated for a healthy classification."
+      ],
+      "chemical_options": [],
+      "chemical_status": "no_verified_recommendation",
+      "status": "verified",
+      "applicable_region": "India; general guidance, not a location-specific prescription",
+      "sources": [
+        {
+          "title": "Tomato — KAU Agri-Infotech Portal",
+          "url": "https://old.celkau.in/Crops/Vegetables/Tomato/tomato.aspx",
+          "source_date": null,
+          "supports": "Crop rotation and disease-free seed/seedlings are described in the tomato crop guidance; displayed here only as general prevention, not disease treatment."
+        }
+      ],
+      "verified_on": "2026-10-19"
+    },
+    {
+      "plant_id": "tomato",
+      "disease_id": "early_blight",
+      "model_label": "Tomato___Early_blight",
+      "plant_species": "Solanum lycopersicum",
+      "condition": "early blight (Alternaria solani)",
+      "symptoms": [
+        "Brown circular leaf lesions that may enlarge and develop concentric rings; a yellow halo and coalescing lesions may occur."
+      ],
+      "diagnostic_limitations": [
+        "Visible spots are not sufficient to confirm Alternaria; other pathogens, nutrient problems, chemical injury, and environmental stress can look similar. Image assessment is preliminary."
+      ],
+      "treatment_categories": [
+        "cultural",
+        "sanitation"
+      ],
+      "non_chemical_management": [
+        "Use disease-free seed from healthy fruit.",
+        "Collect and dispose of affected crop debris.",
+        "Maintain plant health."
+      ],
+      "chemical_options": [],
+      "chemical_status": "no_verified_recommendation",
+      "status": "verified",
+      "applicable_region": "India; confirm local advice and current guidance",
+      "sources": [
+        {
+          "title": "Tomato early blight — KAU e-Crop Doctor",
+          "url": "https://celkau.in/ecropdoctor/vegetables/tomato/earlyblight.php",
+          "source_date": null,
+          "supports": "Symptoms and the listed non-chemical management practices."
+        }
+      ],
+      "verified_on": "2026-10-19"
+    },
+    {
+      "plant_id": "tomato",
+      "disease_id": "late_blight",
+      "model_label": "Tomato___Late_blight",
+      "plant_species": "Solanum lycopersicum",
+      "condition": "late blight (Phytophthora infestans)",
+      "symptoms": [
+        "Light-green marginal leaf lesions can darken and coalesce; white growth may appear in wet, humid conditions."
+      ],
+      "diagnostic_limitations": [
+        "A photograph cannot establish the pathogen. Late blight can progress rapidly; seek local agricultural advice promptly if suspected."
+      ],
+      "treatment_categories": [
+        "cultural",
+        "sanitation"
+      ],
+      "non_chemical_management": [
+        "Use disease-free seed/planting material.",
+        "Remove infected debris using locally approved disposal practices.",
+        "Rotate with non-host crops."
+      ],
+      "chemical_options": [],
+      "chemical_status": "no_verified_recommendation",
+      "status": "verified",
+      "applicable_region": "India; confirm local advice and current guidance",
+      "sources": [
+        {
+          "title": "Tomato late blight — KAU Agri-Infotech Portal",
+          "url": "https://www.celkau.in/Crops/Vegetables/tomato/lateblight.php",
+          "source_date": null,
+          "supports": "Symptoms and the listed non-chemical management practices."
+        }
+      ],
+      "verified_on": "2026-10-19"
+    },
+    {
+      "plant_id": "potato",
+      "disease_id": "healthy",
+      "model_label": "Potato___healthy",
+      "plant_species": "Solanum tuberosum",
+      "condition": "healthy",
+      "symptoms": [],
+      "diagnostic_limitations": [
+        "A model healthy classification is not proof that the whole plant is disease-free. The model only supports this leaf-image class."
+      ],
+      "treatment_categories": [
+        "cultural"
+      ],
+      "non_chemical_management": [
+        "No disease medicine is indicated for a healthy classification."
+      ],
+      "chemical_options": [],
+      "chemical_status": "no_verified_recommendation",
+      "status": "verified",
+      "applicable_region": "India; general guidance, not a location-specific prescription",
+      "sources": [
+        {
+          "title": "Potato late blight — KAU Agri-Infotech Portal",
+          "url": "https://celkau.in/crops/vegetables/potato/latelbight.php",
+          "source_date": null,
+          "supports": "KAU recommends disease-free seed potatoes and field sanitation as disease prevention; displayed here only as general prevention."
+        }
+      ],
+      "verified_on": "2026-10-19"
+    },
+    {
+      "plant_id": "potato",
+      "disease_id": "early_blight",
+      "model_label": "Potato___Early_blight",
+      "plant_species": "Solanum tuberosum",
+      "condition": "early blight (Alternaria solani)",
+      "symptoms": [
+        "Older lower leaves may develop circular brown spots with dry, papery concentric rings and yellowing; tubers can also show depressed lesions."
+      ],
+      "diagnostic_limitations": [
+        "Leaf appearance alone cannot confirm the pathogen or exclude other causes; tuber symptoms are not assessable from a leaf-only image."
+      ],
+      "treatment_categories": [
+        "cultural",
+        "sanitation"
+      ],
+      "non_chemical_management": [
+        "Collect and dispose of crop debris and potential host plants.",
+        "Use disease-free seed tubers.",
+        "Avoid waterlogging and use fertilizer judiciously."
+      ],
+      "chemical_options": [],
+      "chemical_status": "no_verified_recommendation",
+      "status": "verified",
+      "applicable_region": "India; confirm local advice and current guidance",
+      "sources": [
+        {
+          "title": "Potato early blight — KAU e-Crop Doctor",
+          "url": "https://celkau.in/ecropdoctor/vegetables/potato/earlybight.php",
+          "source_date": null,
+          "supports": "Symptoms and the listed non-chemical management practices."
+        }
+      ],
+      "verified_on": "2026-10-19"
+    },
+    {
+      "plant_id": "potato",
+      "disease_id": "late_blight",
+      "model_label": "Potato___Late_blight",
+      "plant_species": "Solanum tuberosum",
+      "condition": "late blight (Phytophthora infestans)",
+      "symptoms": [
+        "Water-soaked lesions often begin near leaf edges; white growth may occur underneath. Stems and tubers can also be affected."
+      ],
+      "diagnostic_limitations": [
+        "A photograph cannot confirm the pathogen. KAU describes rapid disease progression; seek local agricultural advice promptly if suspected."
+      ],
+      "treatment_categories": [
+        "cultural",
+        "sanitation"
+      ],
+      "non_chemical_management": [
+        "Inspect seed potatoes and remove affected tubers.",
+        "Keep tubers covered by adequate ridges.",
+        "Remove infected debris and volunteer host plants.",
+        "Avoid waterlogging."
+      ],
+      "chemical_options": [],
+      "chemical_status": "no_verified_recommendation",
+      "status": "verified",
+      "applicable_region": "India; confirm local advice and current guidance",
+      "sources": [
+        {
+          "title": "Potato late blight — KAU Agri-Infotech Portal",
+          "url": "https://celkau.in/crops/vegetables/potato/latelbight.php",
+          "source_date": null,
+          "supports": "Symptoms and the listed non-chemical management practices."
+        },
+        {
+          "title": "Integrated Disease Management of late blight of potato — ICAR Indian Farming",
+          "url": "https://epubs.icar.org.in/index.php/IndFarm/article/view/48821",
+          "source_date": "2010",
+          "supports": "Plant healthy seed tubers, remove cull potatoes and volunteers, use resistant cultivars, and scout/forecast."
+        }
+      ],
+      "verified_on": "2026-10-19"
+    }
+  ]
+}

@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AgriGuard AI | Development workspace",
-  description: "Development-only numeric SVM to ONNX feasibility harness.",
+  title: "AgriGuard AI | Plant assessment",
+  description: "A cautious, consent-aware preliminary plant photo assessment.",
 };
 
 export const viewport: Viewport = {
