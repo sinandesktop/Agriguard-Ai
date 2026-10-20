@@ -376,16 +376,24 @@ export default function AssessmentForm({ localInference = runPhase9Inference }: 
 
         <div className="form-step">
           <label htmlFor="leaf-image">2. Add a leaf photo</label>
-          <input
-            ref={inputRef}
-            id="leaf-image"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={chooseImage}
-            aria-describedby="image-help"
-            disabled={loading}
-          />
-        <p className="field-help" id="image-help">JPEG, PNG, or WebP. Maximum 4 MiB. You can use your camera or choose a photo.</p>
+          <div className="image-picker">
+            <span className="image-picker-prompt" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5" /></svg>
+              <span className="image-picker-label">Choose image</span>
+              <span className="image-picker-hint">Browse your photos or take one</span>
+            </span>
+            <input
+              ref={inputRef}
+              id="leaf-image"
+              className="image-picker-input"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={chooseImage}
+              aria-describedby="image-help"
+              disabled={loading}
+            />
+          </div>
+          <p className="field-help" id="image-help">JPEG, PNG, or WebP. Maximum 4 MiB.</p>
           {previewUrl && image && (
             <div className="image-preview">
               <img src={previewUrl} alt={`Preview of selected leaf photo: ${image.name}`} />
