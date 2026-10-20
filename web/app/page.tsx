@@ -1,5 +1,6 @@
 import AssessmentForm from "./assessment/assessment-form";
 import HeroPhoto from "./hero-photo";
+import SiteHeader from "./site-header";
 
 function LeafMark() {
   return (
@@ -7,22 +8,6 @@ function LeafMark() {
       <path d="M26.5 5.5C16 5.8 8.2 8.8 6.2 16.4c-1.1 4.4 1.7 7.9 5.9 7.7 8.7-.3 12.7-8.3 14.4-18.6Z" />
       <path d="M5 27c4.6-7 9.1-10.9 16.3-14.4" />
     </svg>
-  );
-}
-
-function SiteHeader() {
-  return (
-    <header className="site-header">
-      <div className="site-header-inner">
-        <a className="brand" href="#home" aria-label="AgriGuard AI home"><LeafMark /><span>AgriGuard <b>AI</b></span></a>
-        <nav className="site-nav" aria-label="Main navigation">
-          <a href="#home">Home</a>
-          <a href="#how-it-works">How it works</a>
-          <a href="#about">About</a>
-        </nav>
-        <a className="button button-small" href="#assessment">Check your plant <span aria-hidden="true">↗</span></a>
-      </div>
-    </header>
   );
 }
 

@@ -19,17 +19,20 @@ Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: () =>
 
 let render: typeof import("@testing-library/react").render;
 let screen: typeof import("@testing-library/react").screen;
+let within: typeof import("@testing-library/react").within;
 let fireEvent: typeof import("@testing-library/react").fireEvent;
 let waitFor: typeof import("@testing-library/react").waitFor;
 let cleanup: typeof import("@testing-library/react").cleanup;
 let user: import("@testing-library/user-event").UserEvent;
 let AssessmentForm: typeof import("../app/assessment/assessment-form").default;
 let HeroPhoto: typeof import("../app/hero-photo").default;
+let SiteHeader: typeof import("../app/site-header").default;
 
 before(async () => {
   const testing = await import("@testing-library/react");
   render = testing.render;
   screen = testing.screen;
+  within = testing.within;
   fireEvent = testing.fireEvent;
   waitFor = testing.waitFor;
   cleanup = testing.cleanup;
@@ -37,10 +40,22 @@ before(async () => {
   user = userEvent.setup({ document: dom.window.document });
   AssessmentForm = (await import("../app/assessment/assessment-form")).default;
   HeroPhoto = (await import("../app/hero-photo")).default;
+  SiteHeader = (await import("../app/site-header")).default;
 });
 
 afterEach(() => {
   cleanup();
+});
+
+test("mobile navigation opens, follows its anchor, and closes", async () => {
+  render(<SiteHeader />);
+  const toggle = screen.getByRole("button", { name: "Open navigation menu" });
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  await user.click(toggle);
+  assert.equal(screen.getByRole("button", { name: "Close navigation menu" }).getAttribute("aria-expanded"), "true");
+  const mobileNav = screen.getByRole("navigation", { name: "Mobile navigation" });
+  await user.click(within(mobileNav).getByRole("link", { name: "How it works" }));
+  assert.equal(screen.getByRole("button", { name: "Open navigation menu" }).getAttribute("aria-expanded"), "false");
 });
 
 const validAssessment = {

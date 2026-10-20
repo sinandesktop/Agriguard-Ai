@@ -22,13 +22,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 ::selection { background: #d6ead8; color: var(--forest-deep); }
 
 .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid rgba(32, 92, 64, .1); background: rgba(248, 248, 240, .96); backdrop-filter: blur(10px); }
-.site-header-inner { display: flex; width: min(100% - 56px, 1200px); min-height: 76px; align-items: center; justify-content: space-between; gap: 28px; margin: 0 auto; }
+.site-header-inner { position: relative; display: flex; width: min(100% - 56px, 1200px); min-height: 76px; align-items: center; justify-content: space-between; gap: 28px; margin: 0 auto; }
 .brand { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 10px; color: var(--forest-deep); font-size: 1.08rem; font-weight: 800; letter-spacing: -.025em; text-decoration: none; }
 .brand b { color: var(--leaf); font-weight: 800; }
 .leaf-mark { width: 32px; height: 32px; fill: none; stroke: var(--forest); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.1; }
 .site-nav { display: flex; align-items: center; gap: clamp(18px, 3vw, 36px); }
 .site-nav a, .text-link { color: #40584c; font-size: .93rem; font-weight: 650; text-decoration: none; transition: color .18s ease; }
 .site-nav a:hover, .text-link:hover { color: var(--leaf); }
+.mobile-menu-toggle, .mobile-nav { display: none; }
 .button { display: inline-flex; min-height: 52px; align-items: center; justify-content: center; gap: 12px; padding: 0 23px; border: 1px solid var(--forest); border-radius: 12px; background: var(--forest); color: white; font-size: .96rem; font-weight: 750; text-decoration: none; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
 .button:hover { transform: translateY(-1px); border-color: var(--forest-deep); background: var(--forest-deep); }
 .button-small { min-height: 43px; padding: 0 17px; border-radius: 10px; font-size: .9rem; }
@@ -171,16 +172,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 @media (max-width: 680px) {
-  html { scroll-padding-top: 120px; }
-  .site-header-inner { width: min(100% - 32px, 1200px); min-height: 70px; flex-wrap: wrap; gap: 0 14px; padding: 13px 0 10px; }
-  .brand { font-size: 1rem; }
+  html { scroll-padding-top: 76px; }
+  .site-header-inner { width: min(100% - 32px, 1200px); min-height: 68px; flex-wrap: nowrap; gap: 12px; padding: 10px 0; }
+  .brand { font-size: .98rem; }
   .brand .leaf-mark { width: 29px; height: 29px; }
-  .site-header-inner > .button { margin-left: auto; }
-  .site-nav { order: 3; width: 100%; justify-content: space-between; gap: 10px; padding: 10px 0 0; }
-  .site-nav a { padding: 5px 0; font-size: .84rem; }
-  .button-small { min-height: 39px; padding: 0 12px; font-size: .82rem; }
-  /* Fill the phone viewport below the two-row sticky mobile header. */
-  .hero-section { min-height: calc(100svh - 88px); padding: 32px 0 38px; }
+  .desktop-nav, .header-cta { display: none; }
+  .mobile-menu-toggle { display: grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; margin-left: auto; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--forest-deep); cursor: pointer; }
+  .menu-icon { display: grid; gap: 4px; }
+  .menu-icon i { display: block; width: 18px; height: 2px; border-radius: 2px; background: currentColor; }
+  .mobile-nav:not([hidden]) { position: absolute; top: calc(100% + 8px); right: 0; left: 0; z-index: 25; display: grid; gap: 4px; padding: 8px; border: 1px solid var(--line); border-radius: 16px; background: white; box-shadow: 0 16px 38px rgba(23, 49, 34, .16); }
+  .mobile-nav a { display: flex; min-height: 46px; align-items: center; padding: 0 12px; border-radius: 10px; color: #30493b; font-size: .94rem; font-weight: 650; text-decoration: none; }
+  .mobile-nav a:hover { background: var(--soft-green); }
+  .mobile-nav .mobile-nav-cta { justify-content: space-between; margin-top: 4px; background: var(--forest); color: white; }
+  /* Fill the phone viewport below the compact, single-row sticky header. */
+  .hero-section { min-height: calc(100svh - 68px); padding: 32px 0 38px; }
   .hero-inner { width: min(100% - 36px, 600px); grid-template-columns: 1fr; gap: 34px; }
   .hero-copy h1 { max-width: 13ch; font-size: clamp(2.7rem, 11vw, 4rem); }
   .hero-description { margin-top: 17px; font-size: 1.02rem; }
@@ -190,7 +195,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .hero-visual::before { top: 18px; border-radius: 22px; }
   .hero-photo, .hero-photo-fallback { height: clamp(220px, 72vw, 350px); border-radius: 19px; }
   .photo-caption { right: 8px; min-height: 46px; padding: 0 12px; font-size: .78rem; }
-  .assessment-shell { padding: 58px 14px 68px; scroll-margin-top: 118px; }
+  .assessment-shell { padding: 58px 14px 68px; scroll-margin-top: 76px; }
   .assessment-card { gap: 18px; padding: 20px 17px; border-radius: 17px; }
   .assessment-button, .secondary-button { width: 100%; }
   .content-section { width: min(100% - 36px, 600px); padding: 64px 0; }
@@ -207,10 +212,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .about-section { grid-template-columns: 52px minmax(0, 1fr); gap: 16px; }
   .about-mark { width: 48px; height: 48px; border-radius: 15px; }
   .about-mark .leaf-mark { width: 31px; height: 31px; }
-  .footer-inner { width: min(100% - 36px, 600px); min-height: 0; grid-template-columns: 1fr; gap: 12px; }
-  .footer-brand, .footer-cta, .footer-inner small { grid-column: 1; grid-row: auto; justify-self: start; }
-  .footer-cta { margin-top: 4px; }
-  .footer-inner small { margin-top: 2px; }
+  .footer-inner { width: min(100% - 36px, 600px); min-height: 0; grid-template-columns: 1fr; gap: 14px; padding: 26px 0 30px; }
+  .footer-brand, .footer-cta, .footer-inner > p, .footer-inner small { grid-column: 1; grid-row: auto; justify-self: start; }
+  .footer-brand { gap: 8px; }
+  .footer-inner > p { font-size: .84rem; line-height: 1.5; }
+  .footer-cta { display: inline-flex; width: 100%; min-height: 46px; align-items: center; justify-content: space-between; margin-top: 0; padding: 0 14px; border: 1px solid #d5e0d4; border-radius: 11px; background: white; font-size: .88rem; }
+  .footer-inner small { max-width: 100%; margin-top: 0; font-size: .75rem; line-height: 1.65; overflow-wrap: anywhere; }
   .result-list > div { grid-template-columns: 1fr; gap: 2px; }
 }
 
